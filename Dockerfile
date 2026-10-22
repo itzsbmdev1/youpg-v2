@@ -83,4 +83,8 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
   CMD wget -qO- http://127.0.0.1:6100/health || exit 1
 
 CMD ["node", "scripts/start.js"]
+# Naya code yahan aayega
 RUN wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared && chmod +x /usr/local/bin/cloudflared
+
+# Iske theek neeche yeh pehle se likha hoga
+USER youpi
