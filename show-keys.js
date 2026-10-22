@@ -1,7 +1,9 @@
+import fs from 'fs';
+import Database from 'better-sqlite3';
+
 setTimeout(() => {
     try {
-        const fs = require('fs');
-        const db = require('better-sqlite3')('./data/youpi_pg.sqlite');
+        const db = new Database('./data/youpi_pg.sqlite');
         console.log("\n==========================================");
         console.log("🔑 AAPKI MERCHANT ID:");
         console.log(db.prepare("SELECT id FROM merchants LIMIT 1").get().id);
@@ -11,4 +13,4 @@ setTimeout(() => {
     } catch(e) {
         console.log("Keys abhi generate nahi hui: ", e.message);
     }
-}, 15000); // 15 second delay taaki server aur database pehle poora start ho jaye
+}, 15000);
