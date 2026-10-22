@@ -1,16 +1,31 @@
 import fs from 'fs';
 import Database from 'better-sqlite3';
 
-setTimeout(() => {
-    try {
-        const db = new Database('./data/youpi_pg.sqlite');
+console.log("🔍 DEBUG SCRIPT STARTED");
+
+try {
+    const dbPath = './data/youpi_pg.sqlite';
+    if (fs.existsSync(dbPath)) {
+        const db = new Database(dbPath);
+        const merchant = db.prepare("SELECT id FROM merchants LIMIT 1").get();
         console.log("\n==========================================");
-        console.log("🔑 AAPKI MERCHANT ID:");
-        console.log(db.prepare("SELECT id FROM merchants LIMIT 1").get().id);
-        console.log("\n🔒 AAPKA WEBHOOK SECRET (MERCHANT KEY):");
-        console.log(fs.readFileSync('./data/.secrets/coin_store_webhook_secret', 'utf8').trim());
-        console.log("==========================================\n");
-    } catch(e) {
-        console.log("Keys abhi generate nahi hui: ", e.message);
+        console.log("🔑 MERCHANT ID:", merchant ? merchant.id : "Merchant table empty");
+    } else {
+        console.log("❌ Database file not found yet at:", dbPath);
     }
-}, 15000);
+} catch(e) {
+    console.log("❌ DB Error:", e.message);
+}
+
+try {
+    const secretPath = './data/.secrets/coin_store_webhook_secret';
+    if (fs.existsSync(secretPath)) {
+        const secret = fs.readFileSync(secretPath, 'utf8').trim();
+        console.log("🔒 WEBHOOK SECRET (MERCHANT KEY):", secret);
+        console.log("==========================================\n");
+    } else {
+        console.log("❌ Secret file not found yet at:", secretPath);
+    }
+} catch(e) {
+    console.log("❌ Secret Error:", e.message);
+}
